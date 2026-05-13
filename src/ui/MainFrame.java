@@ -7,38 +7,96 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
 
-        // Configuración ventana
+        // Window configuration
         setTitle("Campus Lite");
-        setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
-        // Panel principal
-        JPanel mainPanel = new JPanel();
+        // Main panel
+        JPanel mainPanel = new JPanel() {
 
-        mainPanel.setLayout(new BorderLayout());
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
 
-        // Título
-        JLabel titleLabel = new JLabel("Campus Lite", JLabel.CENTER);
+                ImageIcon background = new ImageIcon("src/images/border.jpg");
 
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+                g.drawImage(
+                        background.getImage(),
+                        0,
+                        0,
+                        getWidth(),
+                        getHeight(),
+                        this
+                );
+            }
+        };
 
-        // Panel botones
-        JPanel buttonPanel = new JPanel();
+        mainPanel.setLayout(null);
 
+        // Title
+        JLabel titleLabel = new JLabel("Campus Lite");
+
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
+
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Buttons
         JButton studentsButton = new JButton("Students");
         JButton coursesButton = new JButton("Courses");
         JButton reportsButton = new JButton("Reports");
 
-        buttonPanel.add(studentsButton);
-        buttonPanel.add(coursesButton);
-        buttonPanel.add(reportsButton);
+        // Add components
+        mainPanel.add(titleLabel);
+        mainPanel.add(studentsButton);
+        mainPanel.add(coursesButton);
+        mainPanel.add(reportsButton);
 
-        // Agregar componentes
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
-        mainPanel.add(buttonPanel, BorderLayout.CENTER);
+        // Dynamic positioning
+        mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
 
-        // Agregar panel al frame
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+
+                int panelWidth = mainPanel.getWidth();
+
+                // Title centered
+                titleLabel.setBounds(
+                        (panelWidth / 2) - 200,
+                        120,
+                        400,
+                        50
+                );
+
+                // Buttons centered
+                studentsButton.setBounds(
+                        (panelWidth / 2) - 200,
+                        240,
+                        120,
+                        40
+                );
+
+                coursesButton.setBounds(
+                        (panelWidth / 2) - 60,
+                        240,
+                        120,
+                        40
+                );
+
+                reportsButton.setBounds(
+                        (panelWidth / 2) + 80,
+                        240,
+                        120,
+                        40
+                );
+            }
+        });
+
+        // Add panel
         add(mainPanel);
+
+        // Fullscreen
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        setVisible(true);
     }
 }
