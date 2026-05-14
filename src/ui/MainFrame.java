@@ -41,10 +41,19 @@ public class MainFrame extends JFrame {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Buttons
+                                                                                   // Add function to the students button
         JButton studentsButton = new JButton("Students");
+        studentsButton.addActionListener(e -> {
+
+            new StudentFrame();
+
+        });
+        
+        
         JButton coursesButton = new JButton("Courses");
         JButton reportsButton = new JButton("Reports");
-
+        
+        
         // Add components
         mainPanel.add(titleLabel);
         mainPanel.add(studentsButton);
@@ -100,3 +109,5 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 }
+
+

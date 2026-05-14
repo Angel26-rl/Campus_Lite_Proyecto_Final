@@ -31,3 +31,4 @@ public abstract class Evaluation {
     public abstract double calculateContribution();
     
 }
+
