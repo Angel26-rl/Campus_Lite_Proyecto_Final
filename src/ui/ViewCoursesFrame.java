@@ -38,3 +38,5 @@ public class ViewCoursesFrame extends JFrame {
         }
     }
 }
+
+
