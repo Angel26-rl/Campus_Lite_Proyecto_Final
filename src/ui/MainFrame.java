@@ -51,6 +51,35 @@ public class MainFrame extends JFrame {
         
         
         JButton coursesButton = new JButton("Courses");
+        
+        coursesButton.addActionListener(e -> {
+
+            String[] options = {
+                "Agregar curso",
+                "Ver cursos"
+            };
+
+            int choice = JOptionPane.showOptionDialog(
+                    null,
+                    "Seleccione una opcion",
+                    "Cursos",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+
+            if (choice == 0) {
+                new AddCourseFrame().setVisible(true);
+            }
+
+            if (choice == 1) {
+                new ViewCoursesFrame().setVisible(true);
+            }
+        });
+        
+        
         JButton reportsButton = new JButton("Reports");
         
         
