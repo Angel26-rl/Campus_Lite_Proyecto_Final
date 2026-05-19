@@ -1,11 +1,10 @@
 package ui;
 
 import domain.Student;
-
 import service.StudentData;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import persistence.StudentFileManager;
 
 import java.awt.*;
 
@@ -77,12 +76,78 @@ public class ViewStudentsFrame extends JFrame {
                 new JScrollPane(table);
 
         // Buttons
+        JButton editButton =
+                new JButton("Edit Student");
+
         JButton deleteButton =
                 new JButton("Delete Student");
 
         JButton backButton =
                 new JButton("Back");
+      
+        
+     // Edit action
+        editButton.addActionListener(e -> {
 
+            int selectedRow = table.getSelectedRow();
+
+            if (selectedRow == -1) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Select a student first."
+                );
+
+                return;
+            }
+
+            Student student =
+                    StudentData.students.get(selectedRow);
+
+            String newName =
+                    JOptionPane.showInputDialog(
+                            this,
+                            "New Name:",
+                            student.getName()
+                    );
+
+            if (newName == null) return;
+
+            String newEmail =
+                    JOptionPane.showInputDialog(
+                            this,
+                            "New Email:",
+                            student.getEmail()
+                    );
+
+            if (newEmail == null) return;
+
+            String newCareer =
+                    JOptionPane.showInputDialog(
+                            this,
+                            "New Career:",
+                            student.getCareer()
+                    );
+
+            if (newCareer == null) return;
+
+            student.setName(newName.trim());
+            student.setEmail(newEmail.trim());
+            student.setCareer(newCareer.trim());
+
+            model.setValueAt(newName.trim(), selectedRow, 1);
+            model.setValueAt(newEmail.trim(), selectedRow, 2);
+            model.setValueAt(newCareer.trim(), selectedRow, 3);
+
+            StudentFileManager.saveStudents();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Student updated successfully."
+            );
+        });
+        
+        
         // Delete action
         deleteButton.addActionListener(e -> {
 
@@ -113,6 +178,8 @@ public class ViewStudentsFrame extends JFrame {
 
         // Bottom panel
         JPanel bottomPanel = new JPanel();
+
+        bottomPanel.add(editButton);
 
         bottomPanel.add(deleteButton);
 
@@ -145,6 +212,8 @@ public class ViewStudentsFrame extends JFrame {
         setVisible(true);
     }
 }
+
+
 
 
 

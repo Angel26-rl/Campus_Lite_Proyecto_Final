@@ -3,8 +3,9 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import domain.Student;
-
 import service.StudentData;
+import java.util.regex.Pattern;
+import persistence.StudentFileManager;
 
 public class AddStudentFrame extends JFrame {
 
@@ -78,15 +79,15 @@ public class AddStudentFrame extends JFrame {
         // Save action
         saveButton.addActionListener(e -> {
 
-            String id = idField.getText();
+            String id = idField.getText().trim();
 
-            String name = nameField.getText();
+            String name = nameField.getText().trim();
 
-            String email = emailField.getText();
+            String email = emailField.getText().trim();
 
-            String career = careerField.getText();
+            String career = careerField.getText().trim();
 
-            // Validation
+            // Empty fields validation
             if (
                     id.isEmpty() ||
                     name.isEmpty() ||
@@ -102,6 +103,39 @@ public class AddStudentFrame extends JFrame {
                 return;
             }
 
+            // Email validation
+            String emailRegex =
+                    "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+            if (!Pattern.matches(emailRegex, email)) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Invalid email format."
+                );
+
+                return;
+            }
+
+            // Duplicate ID validation
+            for (Student existingStudent :
+                    StudentData.students) {
+
+                if (
+                        existingStudent
+                                .getStudentId()
+                                .equalsIgnoreCase(id)
+                ) {
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Student ID already exists."
+                    );
+
+                    return;
+                }
+            }
+
             // Create student object
             Student student = new Student(
                     id,
@@ -112,6 +146,8 @@ public class AddStudentFrame extends JFrame {
 
             // Save student
             StudentData.students.add(student);
+
+            StudentFileManager.saveStudents();
 
             JOptionPane.showMessageDialog(
                     null,
@@ -199,3 +235,4 @@ public class AddStudentFrame extends JFrame {
         setVisible(true);
     }
 }
+

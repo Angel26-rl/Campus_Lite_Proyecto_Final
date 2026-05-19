@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import domain.Course;
 import service.CourseData;
+import persistence.CourseFileManager;
 
 public class AddCourseFrame extends JFrame {
 
     private JTextField txtCode;
     private JTextField txtName;
+    private JTextField txtCredits;
 
     public AddCourseFrame() {
         setTitle("Agregar curso");
@@ -16,7 +18,7 @@ public class AddCourseFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(5, 2, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 
         panel.add(new JLabel("Codigo del curso:"));
@@ -26,6 +28,9 @@ public class AddCourseFrame extends JFrame {
         panel.add(new JLabel("Nombre del curso:"));
         txtName = new JTextField();
         panel.add(txtName);
+        panel.add(new JLabel("Creditos:"));
+        txtCredits = new JTextField();
+        panel.add(txtCredits);
 
         JButton btnSave = new JButton("Guardar");
         JButton btnCancel = new JButton("Cancelar");
@@ -42,20 +47,60 @@ public class AddCourseFrame extends JFrame {
     private void saveCourse() {
         String code = txtCode.getText().trim();
         String name = txtName.getText().trim();
+        String creditsText =
+                txtCredits.getText().trim();
 
-        if (code.isEmpty() || name.isEmpty()) {
+        if (
+                code.isEmpty() ||
+                name.isEmpty() ||
+                creditsText.isEmpty()
+        ) {
             JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.");
             return;
         }
 
-        Course course = new Course(code, name);
+        int credits;
+
+        try {
+
+            credits =
+                    Integer.parseInt(creditsText);
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Credits must be a number."
+            );
+
+            return;
+        }
+
+        Course course = new Course(
+                code,
+                name,
+                credits
+        );
 
         if (CourseData.addCourse(course)) {
-            JOptionPane.showMessageDialog(this, "Curso guardado correctamente.");
+
+            CourseFileManager.saveCourses();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Curso guardado correctamente."
+            );
+
             txtCode.setText("");
             txtName.setText("");
+            txtCredits.setText("");
+
         } else {
-            JOptionPane.showMessageDialog(this, "Ya existe un curso con ese codigo.");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ya existe un curso con ese codigo."
+            );
         }
     }
 }

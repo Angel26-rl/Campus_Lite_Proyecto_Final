@@ -1,17 +1,29 @@
 package main;
 
 import ui.MainFrame;
+import persistence.StudentFileManager;
+import persistence.CourseFileManager;
 
 public class Main {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        MainFrame frame = new MainFrame();
+	    StudentFileManager.loadStudents();
 
-        frame.setVisible(true);
-    }
+	    CourseFileManager.loadCourses();
+
+	    MainFrame frame = new MainFrame();
+
+	    frame.setVisible(true);
+	}
 }
 //Mostrar Ventana
+//Persistencia aplicada a student y course
+
+
+
+
+
 
 
 
