@@ -7,19 +7,26 @@ public class Course {
     private String courseName;
 
     private int credits;
+    
+    private String schedule;
 
     // Constructor
+    
+
     public Course(
             String courseCode,
             String courseName,
-            int credits
-    ) {
+            int credits,
+            String schedule) 
+    {
 
         this.courseCode = courseCode;
 
         this.courseName = courseName;
 
         this.credits = credits;
+        
+        this.schedule = schedule;
     }
 
     // Getters and setters
@@ -46,4 +53,13 @@ public class Course {
     public void setCredits(int credits) {
         this.credits = credits;
     }
-}
+        
+        public String getSchedule() {
+            return schedule;
+        }
+
+        public void setSchedule(String schedule) {
+            this.schedule = schedule;
+    }      
+        
+    }

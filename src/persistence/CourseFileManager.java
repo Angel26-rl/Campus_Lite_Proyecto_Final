@@ -30,7 +30,8 @@ public class CourseFileManager {
 
                         course.getCourseName() + "," +
 
-                        course.getCredits()
+                        course.getCredits() + "," +
+                        course.getSchedule()
                 );
 
                 writer.newLine();
@@ -51,7 +52,6 @@ public class CourseFileManager {
 
             File file = new File(FILE_NAME);
 
-            // Create file if it does not exist
             if (!file.exists()) {
 
                 file.createNewFile();
@@ -70,15 +70,13 @@ public class CourseFileManager {
 
                 String[] data = line.split(",");
 
-                if (data.length == 3) {
+                if (data.length == 4) {
 
                     Course course = new Course(
-
                             data[0],
-
                             data[1],
-
-                            Integer.parseInt(data[2])
+                            Integer.parseInt(data[2]),
+                            data[3]
                     );
 
                     CourseData.courses.add(course);
@@ -92,4 +90,5 @@ public class CourseFileManager {
             e.printStackTrace();
         }
     }
+    
 }

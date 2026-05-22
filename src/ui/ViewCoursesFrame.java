@@ -25,11 +25,13 @@ public class ViewCoursesFrame extends JFrame {
 
         model = new DefaultTableModel();
 
-        model.addColumn("Code");
+        model.addColumn("Codigo");
 
-        model.addColumn("Name");
+        model.addColumn("Nombre");
 
-        model.addColumn("Credits");
+        model.addColumn("Creditos");
+        
+        model.addColumn("Horario");
 
         table = new JTable(model);
 
@@ -188,7 +190,9 @@ public class ViewCoursesFrame extends JFrame {
 
                     c.getCourseName(),
 
-                    c.getCredits()
+                    c.getCredits(),
+                    
+                    c.getSchedule()
             });
         }
     }

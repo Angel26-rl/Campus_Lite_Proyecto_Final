@@ -11,6 +11,7 @@ public class AddCourseFrame extends JFrame {
     private JTextField txtCode;
     private JTextField txtName;
     private JTextField txtCredits;
+    private JTextField txtSchedule;
 
     public AddCourseFrame() {
         setTitle("Agregar curso");
@@ -31,6 +32,9 @@ public class AddCourseFrame extends JFrame {
         panel.add(new JLabel("Creditos:"));
         txtCredits = new JTextField();
         panel.add(txtCredits);
+        panel.add(new JLabel("Horario:"));
+        txtSchedule = new JTextField();
+        panel.add(txtSchedule);
 
         JButton btnSave = new JButton("Guardar");
         JButton btnCancel = new JButton("Cancelar");
@@ -49,11 +53,15 @@ public class AddCourseFrame extends JFrame {
         String name = txtName.getText().trim();
         String creditsText =
                 txtCredits.getText().trim();
+        String schedule =
+                txtSchedule.getText().trim();
 
         if (
                 code.isEmpty() ||
                 name.isEmpty() ||
-                creditsText.isEmpty()
+                creditsText.isEmpty() ||
+                schedule.isEmpty()
+                
         ) {
             JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.");
             return;
@@ -76,11 +84,13 @@ public class AddCourseFrame extends JFrame {
             return;
         }
 
-        Course course = new Course(
-                code,
-                name,
-                credits
-        );
+        Course course =
+                new Course(
+                        code,
+                        name,
+                        credits,
+                        schedule
+                );
 
         if (CourseData.addCourse(course)) {
 
