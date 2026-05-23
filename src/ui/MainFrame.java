@@ -7,18 +7,15 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
 
-        // Window configuration
         setTitle("Campus Lite");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Main panel
         JPanel mainPanel = new JPanel() {
-
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                ImageIcon background = new ImageIcon("src/images/border.jpg");
+                ImageIcon background = new ImageIcon("src/images/dashboard.png");
 
                 g.drawImage(
                         background.getImage(),
@@ -33,115 +30,47 @@ public class MainFrame extends JFrame {
 
         mainPanel.setLayout(null);
 
-        // Title
-        JLabel titleLabel = new JLabel("Campus Lite");
+        JButton studentsButton = createInvisibleButton();
+        JButton coursesButton = createInvisibleButton();
+        JButton reportsButton = createInvisibleButton();
 
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
+        studentsButton.addActionListener(e -> new StudentFrame());
 
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Buttons
-                                                                                   // Add function to the students button
-        JButton studentsButton = new JButton("Students");
-        studentsButton.addActionListener(e -> {
-
-            new StudentFrame();
-
-        });
-        
-        
-        JButton coursesButton = new JButton("Courses");
-        
         coursesButton.addActionListener(e -> {
 
-            String[] options = {
-                "Agregar curso",
-                "Ver cursos"
-            };
+            new CourseFrame();
 
-            int choice = JOptionPane.showOptionDialog(
-                    null,
-                    "Seleccione una opcion",
-                    "Cursos",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    null,
-                    options,
-                    options[0]
-            );
-
-            if (choice == 0) {
-                new AddCourseFrame().setVisible(true);
-            }
-
-            if (choice == 1) {
-                new ViewCoursesFrame().setVisible(true);
-            }
         });
-        
-        
-        JButton reportsButton = new JButton("Reports");
-        
-        
-        // Add components
-        mainPanel.add(titleLabel);
+
         mainPanel.add(studentsButton);
         mainPanel.add(coursesButton);
         mainPanel.add(reportsButton);
 
-        // Dynamic positioning
         mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
 
-                int panelWidth = mainPanel.getWidth();
+                int w = mainPanel.getWidth();
+                int h = mainPanel.getHeight();
 
-                // Title centered
-                titleLabel.setBounds(
-                        (panelWidth / 2) - 200,
-                        120,
-                        400,
-                        50
-                );
-
-                // Buttons centered
-                studentsButton.setBounds(
-                        (panelWidth / 2) - 200,
-                        240,
-                        120,
-                        40
-                );
-
-                coursesButton.setBounds(
-                        (panelWidth / 2) - 60,
-                        240,
-                        120,
-                        40
-                );
-
-                reportsButton.setBounds(
-                        (panelWidth / 2) + 80,
-                        240,
-                        120,
-                        40
-                );
+                studentsButton.setBounds(w / 2 - 500, h / 2 + 40, 300, 200);
+                coursesButton.setBounds(w / 2 - 150, h / 2 + 40, 300, 200);
+                reportsButton.setBounds(w / 2 + 200, h / 2 + 40, 300, 200);
             }
         });
 
-        // Add panel
         add(mainPanel);
-
-        // Fullscreen
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         setVisible(true);
     }
+
+    private JButton createInvisibleButton() {
+        JButton button = new JButton();
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
+    }
 }
-
-// Solución archivo
-
-
-
-
-

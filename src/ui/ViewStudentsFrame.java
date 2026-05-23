@@ -1,23 +1,24 @@
 package ui;
 
 import domain.Student;
+import persistence.StudentFileManager;
 import service.StudentData;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import persistence.StudentFileManager;
-
 import java.awt.*;
 
 public class ViewStudentsFrame extends JFrame {
 
+    private JTable table;
+    private DefaultTableModel model;
+
     public ViewStudentsFrame() {
 
-        // Window configuration
-        setTitle("View Students");
+        setTitle("Ver Estudiantes");
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Main panel with background
         JPanel mainPanel = new JPanel() {
 
             @Override
@@ -25,7 +26,9 @@ public class ViewStudentsFrame extends JFrame {
                 super.paintComponent(g);
 
                 ImageIcon background =
-                        new ImageIcon("src/images/bordertwo.jpg");
+                        new ImageIcon(
+                                getClass().getResource("/images/view_students.png")
+                        );
 
                 g.drawImage(
                         background.getImage(),
@@ -38,182 +41,250 @@ public class ViewStudentsFrame extends JFrame {
             }
         };
 
-        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setLayout(null);
 
-        // Table columns
         String[] columns = {
-                "Student ID",
-                "Name",
-                "Email",
-                "Career"
+                "ID Estudiante",
+                "Nombre",
+                "Correo",
+                "Carrera"
         };
 
-        // Table model
-        DefaultTableModel model =
-                new DefaultTableModel(columns, 0);
+        model = new DefaultTableModel(columns, 0);
 
-        // Load students into table
         for (Student student : StudentData.students) {
 
-            Object[] row = {
+            model.addRow(new Object[] {
 
                     student.getStudentId(),
-
                     student.getName(),
-
                     student.getEmail(),
-
                     student.getCareer()
-            };
-
-            model.addRow(row);
+            });
         }
 
-        // Table
-        JTable table = new JTable(model);
+        table = new JTable(model);
+
+        table.setRowHeight(50);
+
+        table.setFont(
+                new Font("Segoe UI", Font.PLAIN, 16)
+        );
+
+        table.getTableHeader().setFont(
+                new Font("Segoe UI", Font.BOLD, 16)
+        );
 
         JScrollPane scrollPane =
                 new JScrollPane(table);
 
-        // Buttons
+        // BOTONES INVISIBLES
         JButton editButton =
-                new JButton("Edit Student");
+                createInvisibleButton();
 
         JButton deleteButton =
-                new JButton("Delete Student");
+                createInvisibleButton();
 
         JButton backButton =
-                new JButton("Back");
-      
-        
-     // Edit action
+                createInvisibleButton();
+
+        // FUNCIONES
         editButton.addActionListener(e -> {
 
-            int selectedRow = table.getSelectedRow();
+            editStudent();
 
-            if (selectedRow == -1) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Select a student first."
-                );
-
-                return;
-            }
-
-            Student student =
-                    StudentData.students.get(selectedRow);
-
-            String newName =
-                    JOptionPane.showInputDialog(
-                            this,
-                            "New Name:",
-                            student.getName()
-                    );
-
-            if (newName == null) return;
-
-            String newEmail =
-                    JOptionPane.showInputDialog(
-                            this,
-                            "New Email:",
-                            student.getEmail()
-                    );
-
-            if (newEmail == null) return;
-
-            String newCareer =
-                    JOptionPane.showInputDialog(
-                            this,
-                            "New Career:",
-                            student.getCareer()
-                    );
-
-            if (newCareer == null) return;
-
-            student.setName(newName.trim());
-            student.setEmail(newEmail.trim());
-            student.setCareer(newCareer.trim());
-
-            model.setValueAt(newName.trim(), selectedRow, 1);
-            model.setValueAt(newEmail.trim(), selectedRow, 2);
-            model.setValueAt(newCareer.trim(), selectedRow, 3);
-
-            StudentFileManager.saveStudents();
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Student updated successfully."
-            );
         });
-        
-        
-        // Delete action
+
         deleteButton.addActionListener(e -> {
 
-            int selectedRow =
-                    table.getSelectedRow();
+            deleteStudent();
 
-            if (selectedRow != -1) {
-
-                StudentData.students.remove(selectedRow);
-
-                model.removeRow(selectedRow);
-
-            } else {
-
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Select a student first."
-                );
-            }
         });
 
-        // Back action
         backButton.addActionListener(e -> {
 
             dispose();
 
         });
 
-        // Bottom panel
-        JPanel bottomPanel = new JPanel();
+        mainPanel.add(scrollPane);
 
-        bottomPanel.add(editButton);
+        mainPanel.add(editButton);
 
-        bottomPanel.add(deleteButton);
+        mainPanel.add(deleteButton);
 
-        bottomPanel.add(backButton);
+        mainPanel.add(backButton);
 
-        // Title
-        JLabel titleLabel =
-                new JLabel(
-                        "Students List",
-                        SwingConstants.CENTER
-                );
+        // POSICIONES
+        mainPanel.addComponentListener(
+                new java.awt.event.ComponentAdapter() {
 
-        titleLabel.setFont(
-                new Font("Arial", Font.BOLD, 30)
+                    @Override
+                    public void componentResized(
+                            java.awt.event.ComponentEvent e
+                    ) {
+
+                        int w =
+                                mainPanel.getWidth();
+
+                        int h =
+                                mainPanel.getHeight();
+
+                        scrollPane.setBounds(
+                                (int)(w * 0.025),
+                                (int)(h * 0.32),
+                                (int)(w * 0.95),
+                                (int)(h * 0.53)
+                        );
+
+                        // EDITAR
+                        editButton.setBounds(
+                                (int)(w * 0.18),
+                                (int)(h * 0.90),
+                                300,
+                                70
+                        );
+
+                        // ELIMINAR
+                        deleteButton.setBounds(
+                                (int)(w * 0.40),
+                                (int)(h * 0.90),
+                                320,
+                                70
+                        );
+
+                        // REGRESAR
+                        backButton.setBounds(
+                                (int)(w * 0.64),
+                                (int)(h * 0.90),
+                                260,
+                                70
+                        );
+                    }
+                }
         );
 
-        // Add components
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
-
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-
-        // Add panel
         add(mainPanel);
 
-        // Open maximized
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         setVisible(true);
     }
+
+    // BOTON INVISIBLE
+    private JButton createInvisibleButton() {
+
+        JButton button =
+                new JButton();
+
+        button.setOpaque(false);
+
+        button.setContentAreaFilled(false);
+
+        button.setBorderPainted(false);
+
+        button.setFocusPainted(false);
+
+        button.setCursor(
+                new Cursor(Cursor.HAND_CURSOR)
+        );
+
+        return button;
+    }
+
+    // EDITAR ESTUDIANTE
+    private void editStudent() {
+
+        int selectedRow =
+                table.getSelectedRow();
+
+        if (selectedRow == -1) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione un estudiante."
+            );
+
+            return;
+        }
+
+        Student student =
+                StudentData.students.get(selectedRow);
+
+        String newName =
+                JOptionPane.showInputDialog(
+                        this,
+                        "Nuevo nombre:",
+                        student.getName()
+                );
+
+        if (newName == null) return;
+
+        String newEmail =
+                JOptionPane.showInputDialog(
+                        this,
+                        "Nuevo correo:",
+                        student.getEmail()
+                );
+
+        if (newEmail == null) return;
+
+        String newCareer =
+                JOptionPane.showInputDialog(
+                        this,
+                        "Nueva carrera:",
+                        student.getCareer()
+                );
+
+        if (newCareer == null) return;
+
+        student.setName(newName);
+
+        student.setEmail(newEmail);
+
+        student.setCareer(newCareer);
+
+        model.setValueAt(newName, selectedRow, 1);
+
+        model.setValueAt(newEmail, selectedRow, 2);
+
+        model.setValueAt(newCareer, selectedRow, 3);
+
+        StudentFileManager.saveStudents();
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Estudiante actualizado."
+        );
+    }
+
+    // ELIMINAR ESTUDIANTE
+    private void deleteStudent() {
+
+        int selectedRow =
+                table.getSelectedRow();
+
+        if (selectedRow == -1) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione un estudiante."
+            );
+
+            return;
+        }
+
+        StudentData.students.remove(selectedRow);
+
+        model.removeRow(selectedRow);
+
+        StudentFileManager.saveStudents();
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Estudiante eliminado."
+        );
+    }
 }
-
-
-
 
 

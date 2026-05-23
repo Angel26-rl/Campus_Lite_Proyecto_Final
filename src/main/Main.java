@@ -18,11 +18,12 @@ public class Main {
 	}
 }
 //Mostrar Ventana
+
 //Persistencia aplicada a student y course
 
 //Se agrego la nueva funcion de horario para course  
 
-
+//Se mejoro toda la interfaz  grafica y visual del sistema 
 
 
 

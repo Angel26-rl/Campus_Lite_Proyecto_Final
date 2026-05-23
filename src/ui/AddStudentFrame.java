@@ -1,238 +1,129 @@
 package ui;
 
+import domain.Student;
+import persistence.StudentFileManager;
+import service.StudentData;
+
 import javax.swing.*;
 import java.awt.*;
-import domain.Student;
-import service.StudentData;
 import java.util.regex.Pattern;
-import persistence.StudentFileManager;
 
 public class AddStudentFrame extends JFrame {
 
     public AddStudentFrame() {
 
-        // Window configuration
-        setTitle("Add Student");
-
+        setTitle("Agregar Estudiante");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Main panel
         JPanel mainPanel = new JPanel() {
-
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
                 ImageIcon background =
-                        new ImageIcon("src/images/borderthree.jpg");
+                        new ImageIcon(getClass().getResource("/images/add_student.png"));
 
-                g.drawImage(
-                        background.getImage(),
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        this
-                );
+                g.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
 
         mainPanel.setLayout(null);
 
-        // Title
-        JLabel titleLabel = new JLabel("Add Student");
-
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 34));
-
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // Labels
-        JLabel idLabel = new JLabel("Student ID:");
-
-        JLabel nameLabel = new JLabel("Name:");
-
-        JLabel emailLabel = new JLabel("Email:");
-
-        JLabel careerLabel = new JLabel("Career:");
-
-        // Text fields
         JTextField idField = new JTextField();
-
         JTextField nameField = new JTextField();
-
         JTextField emailField = new JTextField();
-
         JTextField careerField = new JTextField();
 
-        // Buttons
-        JButton saveButton = new JButton("Save");
+        styleField(idField);
+        styleField(nameField);
+        styleField(emailField);
+        styleField(careerField);
 
-        JButton backButton = new JButton("Back");
+        JButton saveButton = createInvisibleButton();
+        JButton backButton = createInvisibleButton();
 
-        // Back action
-        backButton.addActionListener(e -> {
-
-            dispose();
-
-        });
-
-        // Save action
         saveButton.addActionListener(e -> {
 
             String id = idField.getText().trim();
-
             String name = nameField.getText().trim();
-
             String email = emailField.getText().trim();
-
             String career = careerField.getText().trim();
 
-            // Empty fields validation
-            if (
-                    id.isEmpty() ||
-                    name.isEmpty() ||
-                    email.isEmpty() ||
-                    career.isEmpty()
-            ) {
-
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Please complete all fields."
-                );
-
+            if (id.isEmpty() || name.isEmpty() || email.isEmpty() || career.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.");
                 return;
             }
 
-            // Email validation
-            String emailRegex =
-                    "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
             if (!Pattern.matches(emailRegex, email)) {
-
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Invalid email format."
-                );
-
+                JOptionPane.showMessageDialog(this, "Formato de correo invalido.");
                 return;
             }
 
-            // Duplicate ID validation
-            for (Student existingStudent :
-                    StudentData.students) {
-
-                if (
-                        existingStudent
-                                .getStudentId()
-                                .equalsIgnoreCase(id)
-                ) {
-
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "Student ID already exists."
-                    );
-
+            for (Student existingStudent : StudentData.students) {
+                if (existingStudent.getStudentId().equalsIgnoreCase(id)) {
+                    JOptionPane.showMessageDialog(this, "El ID del estudiante ya existe.");
                     return;
                 }
             }
 
-            // Create student object
-            Student student = new Student(
-                    id,
-                    name,
-                    email,
-                    career
-            );
+            Student student = new Student(id, name, email, career);
 
-            // Save student
             StudentData.students.add(student);
-
             StudentFileManager.saveStudents();
 
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Student saved successfully!"
-            );
+            JOptionPane.showMessageDialog(this, "Estudiante guardado correctamente.");
 
-            // Clear fields
             idField.setText("");
-
             nameField.setText("");
-
             emailField.setText("");
-
             careerField.setText("");
         });
 
-        // Add components
-        mainPanel.add(titleLabel);
-
-        mainPanel.add(idLabel);
-        mainPanel.add(nameLabel);
-        mainPanel.add(emailLabel);
-        mainPanel.add(careerLabel);
+        backButton.addActionListener(e -> dispose());
 
         mainPanel.add(idField);
         mainPanel.add(nameField);
         mainPanel.add(emailField);
         mainPanel.add(careerField);
-
         mainPanel.add(saveButton);
         mainPanel.add(backButton);
 
-        // Responsive positions
-        mainPanel.addComponentListener(
-                new java.awt.event.ComponentAdapter() {
-
+        mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
-            public void componentResized(
-                    java.awt.event.ComponentEvent e) {
+            public void componentResized(java.awt.event.ComponentEvent e) {
 
-                int panelWidth = mainPanel.getWidth();
+                int w = mainPanel.getWidth();
+                int h = mainPanel.getHeight();
 
-                int centerX = panelWidth / 2;
+                idField.setBounds((int)(w * 0.34), (int)(h * 0.37), (int)(w * 0.48), 55);
+                nameField.setBounds((int)(w * 0.34), (int)(h * 0.47), (int)(w * 0.48), 55);
+                emailField.setBounds((int)(w * 0.34), (int)(h * 0.57), (int)(w * 0.48), 55);
+                careerField.setBounds((int)(w * 0.34), (int)(h * 0.67), (int)(w * 0.48), 55);
 
-                // Title
-                titleLabel.setBounds(
-                        centerX - 250,
-                        80,
-                        500,
-                        50
-                );
-
-                // Labels
-                idLabel.setBounds(centerX - 220, 180, 100, 30);
-
-                nameLabel.setBounds(centerX - 220, 240, 100, 30);
-
-                emailLabel.setBounds(centerX - 220, 300, 100, 30);
-
-                careerLabel.setBounds(centerX - 220, 360, 100, 30);
-
-                // Fields
-                idField.setBounds(centerX - 100, 180, 250, 30);
-
-                nameField.setBounds(centerX - 100, 240, 250, 30);
-
-                emailField.setBounds(centerX - 100, 300, 250, 30);
-
-                careerField.setBounds(centerX - 100, 360, 250, 30);
-
-                // Buttons
-                saveButton.setBounds(centerX - 70, 460, 140, 40);
-
-                backButton.setBounds(40, mainPanel.getHeight() - 100,
-                        100, 40);
+                saveButton.setBounds((int)(w * 0.35), (int)(h * 0.77), (int)(w * 0.30), 70);
+                backButton.setBounds((int)(w * 0.01), (int)(h * 0.90), (int)(w * 0.14), 70);
             }
         });
 
-        // Add panel
         add(mainPanel);
-
-        // Open maximized
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         setVisible(true);
     }
-}
 
+    private void styleField(JTextField field) {
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        field.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    }
+
+    private JButton createInvisibleButton() {
+        JButton button = new JButton();
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
+    }
+}

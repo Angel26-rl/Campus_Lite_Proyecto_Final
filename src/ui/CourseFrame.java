@@ -3,20 +3,21 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
-public class StudentFrame extends JFrame {
+public class CourseFrame extends JFrame {
 
-    public StudentFrame() {
+    public CourseFrame() {
 
-        setTitle("Gestion de Estudiantes");
+        setTitle("Gestion de Cursos");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel mainPanel = new JPanel() {
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
                 ImageIcon background =
-                        new ImageIcon(getClass().getResource("/images/students_dashboard.png"));
+                        new ImageIcon(getClass().getResource("/images/courses_dashboard.png"));
 
                 g.drawImage(
                         background.getImage(),
@@ -31,47 +32,53 @@ public class StudentFrame extends JFrame {
 
         mainPanel.setLayout(null);
 
-        JButton addButton = invisibleButton();
-        JButton viewButton = invisibleButton();
-        JButton backButton = invisibleButton();
+        JButton addCourseButton = createInvisibleButton();
+        JButton viewCoursesButton = createInvisibleButton();
+        JButton backButton = createInvisibleButton();
 
-        addButton.addActionListener(e -> new AddStudentFrame().setVisible(true));
-        viewButton.addActionListener(e -> new ViewStudentsFrame().setVisible(true));
-        backButton.addActionListener(e -> dispose());
+        addCourseButton.addActionListener(e -> {
+            new AddCourseFrame().setVisible(true);
+        });
 
-        mainPanel.add(addButton);
-        mainPanel.add(viewButton);
+        viewCoursesButton.addActionListener(e -> {
+            new ViewCoursesFrame().setVisible(true);
+        });
+
+        backButton.addActionListener(e -> {
+            dispose();
+        });
+
+        mainPanel.add(addCourseButton);
+        mainPanel.add(viewCoursesButton);
         mainPanel.add(backButton);
 
         mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+
             @Override
             public void componentResized(java.awt.event.ComponentEvent e) {
 
                 int w = mainPanel.getWidth();
                 int h = mainPanel.getHeight();
 
-                // Tarjeta Agregar Estudiante
-                addButton.setBounds(
-                        (int)(w * 0.37),
-                        (int)(h * 0.45),
-                        (int)(w * 0.20),
-                        (int)(h * 0.35)
+                addCourseButton.setBounds(
+                        (int) (w * 0.33),
+                        (int) (h * 0.42),
+                        (int) (w * 0.23),
+                        (int) (h * 0.37)
                 );
 
-                // Tarjeta Ver Estudiantes
-                viewButton.setBounds(
-                        (int)(w * 0.60),
-                        (int)(h * 0.45),
-                        (int)(w * 0.20),
-                        (int)(h * 0.35)
+                viewCoursesButton.setBounds(
+                        (int) (w * 0.59),
+                        (int) (h * 0.42),
+                        (int) (w * 0.23),
+                        (int) (h * 0.37)
                 );
 
-                // Boton Regresar
                 backButton.setBounds(
-                        (int)(w * 0.20),
-                        (int)(h * 0.85),
-                        (int)(w * 0.16),
-                        (int)(h * 0.08)
+                        (int) (w * 0.20),
+                        (int) (h * 0.86),
+                        (int) (w * 0.15),
+                        (int) (h * 0.08)
                 );
             }
         });
@@ -81,13 +88,16 @@ public class StudentFrame extends JFrame {
         setVisible(true);
     }
 
-    private JButton invisibleButton() {
+    private JButton createInvisibleButton() {
+
         JButton button = new JButton();
+
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         return button;
     }
 }
