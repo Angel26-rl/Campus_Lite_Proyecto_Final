@@ -140,3 +140,5 @@ public class MainFrame extends JFrame {
         return button;
     }
 }
+
+//Solucion de Conflicto con el boton de Reportes y cambios trabajados
