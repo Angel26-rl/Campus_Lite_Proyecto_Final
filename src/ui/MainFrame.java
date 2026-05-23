@@ -5,7 +5,18 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    public MainFrame() {
+    public interface btnReport {
+
+		static void addActionListener(Object object) {
+			// TODO Auto-generated method stub
+			
+		}
+
+	}
+
+	private Component btnReport;
+
+	public MainFrame() {
 
         // Window configuration
         setTitle("Campus Lite");
@@ -80,14 +91,17 @@ public class MainFrame extends JFrame {
         });
         
         
-        JButton reportsButton = new JButton("Reports");
-        
-        
+        JButton btnReports = new JButton("Reports");
+        btnReports.addActionListener(e -> {
+
+            new ReportsMenuFrame();
+        });
+      
         // Add components
         mainPanel.add(titleLabel);
         mainPanel.add(studentsButton);
         mainPanel.add(coursesButton);
-        mainPanel.add(reportsButton);
+        mainPanel.add(btnReports);
 
         // Dynamic positioning
         mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -120,7 +134,7 @@ public class MainFrame extends JFrame {
                         40
                 );
 
-                reportsButton.setBounds(
+                btnReports.setBounds(
                         (panelWidth / 2) + 80,
                         240,
                         120,
