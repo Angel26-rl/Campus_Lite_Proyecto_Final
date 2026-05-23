@@ -8,14 +8,18 @@ public class MainFrame extends JFrame {
     public MainFrame() {
 
         setTitle("Campus Lite");
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel() {
+
             @Override
             protected void paintComponent(Graphics g) {
+
                 super.paintComponent(g);
 
-                ImageIcon background = new ImageIcon("src/images/dashboard.png");
+                ImageIcon background =
+                        new ImageIcon("src/images/dashboard.png");
 
                 g.drawImage(
                         background.getImage(),
@@ -30,11 +34,22 @@ public class MainFrame extends JFrame {
 
         mainPanel.setLayout(null);
 
-        JButton studentsButton = createInvisibleButton();
-        JButton coursesButton = createInvisibleButton();
-        JButton reportsButton = createInvisibleButton();
+        // BOTONES INVISIBLES
+        JButton studentsButton =
+                createInvisibleButton();
 
-        studentsButton.addActionListener(e -> new StudentFrame());
+        JButton coursesButton =
+                createInvisibleButton();
+
+        JButton reportsButton =
+                createInvisibleButton();
+
+        // FUNCIONES BOTONES
+        studentsButton.addActionListener(e -> {
+
+            new StudentFrame();
+
+        });
 
         coursesButton.addActionListener(e -> {
 
@@ -42,35 +57,86 @@ public class MainFrame extends JFrame {
 
         });
 
-        mainPanel.add(studentsButton);
-        mainPanel.add(coursesButton);
-        mainPanel.add(reportsButton);
+        reportsButton.addActionListener(e -> {
 
-        mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
+            new ReportsMenuFrame();
 
-                int w = mainPanel.getWidth();
-                int h = mainPanel.getHeight();
-
-                studentsButton.setBounds(w / 2 - 500, h / 2 + 40, 300, 200);
-                coursesButton.setBounds(w / 2 - 150, h / 2 + 40, 300, 200);
-                reportsButton.setBounds(w / 2 + 200, h / 2 + 40, 300, 200);
-            }
         });
 
+        // AGREGAR BOTONES
+        mainPanel.add(studentsButton);
+
+        mainPanel.add(coursesButton);
+
+        mainPanel.add(reportsButton);
+
+        // POSICIONES
+        mainPanel.addComponentListener(
+                new java.awt.event.ComponentAdapter() {
+
+                    @Override
+                    public void componentResized(
+                            java.awt.event.ComponentEvent e
+                    ) {
+
+                        int w =
+                                mainPanel.getWidth();
+
+                        int h =
+                                mainPanel.getHeight();
+
+                        // ESTUDIANTES
+                        studentsButton.setBounds(
+                                w / 2 - 560,
+                                h / 2 - 10,
+                                300,
+                                320
+                        );
+
+                        // CURSOS
+                        coursesButton.setBounds(
+                                w / 2 - 150,
+                                h / 2 - 10,
+                                300,
+                                320
+                        );
+
+                        // REPORTES
+                        reportsButton.setBounds(
+                                w / 2 + 260,
+                                h / 2 - 10,
+                                300,
+                                320
+                        );
+                    }
+                }
+        );
+
         add(mainPanel);
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         setVisible(true);
     }
 
+    // BOTON INVISIBLE
     private JButton createInvisibleButton() {
-        JButton button = new JButton();
+
+        JButton button =
+                new JButton();
+
         button.setOpaque(false);
+
         button.setContentAreaFilled(false);
+
         button.setBorderPainted(false);
+
         button.setFocusPainted(false);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        button.setCursor(
+                new Cursor(Cursor.HAND_CURSOR)
+        );
+
         return button;
     }
 }
