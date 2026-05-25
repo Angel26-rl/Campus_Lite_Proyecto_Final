@@ -6,10 +6,6 @@ import java.awt.*;
 
 public class ReportsMenuFrame extends JFrame {
 
-    private JButton btnStudentReport;
-
-    private JButton btnCourseReport;
-
     private JButton btnDashboard;
 
     public ReportsMenuFrame() {
@@ -28,12 +24,6 @@ public class ReportsMenuFrame extends JFrame {
         // BOTONES
         // =========================
 
-        btnStudentReport =
-                new JButton("Student Reports");
-
-        btnCourseReport =
-                new JButton("Course Reports");
-
         btnDashboard =
                 new JButton("Dashboard");
 
@@ -41,9 +31,6 @@ public class ReportsMenuFrame extends JFrame {
         // AGREGAR BOTONES
         // =========================
 
-        add(btnStudentReport);
-
-        add(btnCourseReport);
 
         add(btnDashboard);
 
@@ -51,17 +38,9 @@ public class ReportsMenuFrame extends JFrame {
         // EVENTOS
         // =========================
 
-        btnStudentReport.addActionListener(e -> {
-
-            new ReportStudentsFrame();
-        });
-
-        btnCourseReport.addActionListener(e -> {
-
-            new ReportCoursesFrame();
-        });
-
-        btnDashboard.addActionListener(e -> {
+      btnDashboard.addActionListener(e -> {
+        	
+        	
 
             new DashboardFrame();
         });
