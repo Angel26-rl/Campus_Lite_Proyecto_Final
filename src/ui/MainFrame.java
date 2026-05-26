@@ -59,7 +59,7 @@ public class MainFrame extends JFrame {
 
         reportsButton.addActionListener(e -> {
 
-            new ReportsMenuFrame();
+        	new ReportsFrame();
 
         });
 
@@ -142,3 +142,4 @@ public class MainFrame extends JFrame {
 }
 
 //Solucion de Conflicto con el boton de Reportes y cambios trabajados
+

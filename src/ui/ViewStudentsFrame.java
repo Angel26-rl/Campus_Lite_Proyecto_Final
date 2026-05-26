@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+import javax.swing.table.DefaultTableCellRenderer;
+
 public class ViewStudentsFrame extends JFrame {
 
     private JTable table;
@@ -59,11 +61,24 @@ public class ViewStudentsFrame extends JFrame {
                     student.getStudentId(),
                     student.getName(),
                     student.getEmail(),
-                    student.getCareer()
+                    formatCareer(student.getCareer())
             });
         }
 
         table = new JTable(model);
+        DefaultTableCellRenderer centerRenderer =
+                new DefaultTableCellRenderer();
+
+        centerRenderer.setHorizontalAlignment(
+                SwingConstants.CENTER
+        );
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+
+            table.getColumnModel()
+                    .getColumn(i)
+                    .setCellRenderer(centerRenderer);
+        }
 
         table.setRowHeight(50);
 
@@ -74,7 +89,10 @@ public class ViewStudentsFrame extends JFrame {
         table.getTableHeader().setFont(
                 new Font("Segoe UI", Font.BOLD, 16)
         );
-
+        ((DefaultTableCellRenderer)
+                table.getTableHeader().getDefaultRenderer())
+                .setHorizontalAlignment(SwingConstants.CENTER);
+        
         JScrollPane scrollPane =
                 new JScrollPane(table);
 
@@ -229,14 +247,34 @@ public class ViewStudentsFrame extends JFrame {
 
         if (newEmail == null) return;
 
-        String newCareer =
-                JOptionPane.showInputDialog(
+        String[] careers = {
+                "0905 - Ingeniería en Sistemas",
+                "0901 - Ingeniería Civil",
+                "0902 - Ingeniería Industrial",
+                "0903 - Ingeniería Electrónica",
+                "0904 - Arquitectura",
+                "0910 - Administración de Empresas",
+                "0911 - Contaduría Pública",
+                "0912 - Derecho"
+        };
+
+        JComboBox<String> careerCombo =
+                new JComboBox<>(careers);
+
+        careerCombo.setSelectedItem(student.getCareer());
+
+        int result =
+                JOptionPane.showConfirmDialog(
                         this,
-                        "Nueva carrera:",
-                        student.getCareer()
+                        careerCombo,
+                        "Seleccione nueva carrera",
+                        JOptionPane.OK_CANCEL_OPTION
                 );
 
-        if (newCareer == null) return;
+        if (result != JOptionPane.OK_OPTION) return;
+
+        String newCareer =
+                careerCombo.getSelectedItem().toString();
 
         student.setName(newName);
 
@@ -248,7 +286,11 @@ public class ViewStudentsFrame extends JFrame {
 
         model.setValueAt(newEmail, selectedRow, 2);
 
-        model.setValueAt(newCareer, selectedRow, 3);
+        model.setValueAt(
+                formatCareer(newCareer),
+                selectedRow,
+                3
+        );
 
         StudentFileManager.saveStudents();
 
@@ -274,6 +316,17 @@ public class ViewStudentsFrame extends JFrame {
             return;
         }
 
+        int confirm =
+                JOptionPane.showConfirmDialog(
+                        this,
+                        "¿Seguro que desea eliminar este estudiante?",
+                        "Confirmar eliminación",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
         StudentData.students.remove(selectedRow);
 
         model.removeRow(selectedRow);
@@ -284,6 +337,42 @@ public class ViewStudentsFrame extends JFrame {
                 this,
                 "Estudiante eliminado."
         );
+    }
+    private String formatCareer(String career) {
+
+        if (career.equals("0905 - Ingeniería en Sistemas")) {
+            return "Ingeniería en Sistemas (0905)";
+        }
+
+        if (career.equals("0901 - Ingeniería Civil")) {
+            return "Ingeniería Civil (0901)";
+        }
+
+        if (career.equals("0902 - Ingeniería Industrial")) {
+            return "Ingeniería Industrial (0902)";
+        }
+
+        if (career.equals("0903 - Ingeniería Electrónica")) {
+            return "Ingeniería Electrónica (0903)";
+        }
+
+        if (career.equals("0904 - Arquitectura")) {
+            return "Arquitectura (0904)";
+        }
+
+        if (career.equals("0910 - Administración de Empresas")) {
+            return "Administración de Empresas (0910)";
+        }
+
+        if (career.equals("0911 - Contaduría Pública")) {
+            return "Contaduría Pública (0911)";
+        }
+
+        if (career.equals("0912 - Derecho")) {
+            return "Derecho (0912)";
+        }
+
+        return career;
     }
 }
 

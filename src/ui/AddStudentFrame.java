@@ -32,12 +32,21 @@ public class AddStudentFrame extends JFrame {
         JTextField idField = new JTextField();
         JTextField nameField = new JTextField();
         JTextField emailField = new JTextField();
-        JTextField careerField = new JTextField();
+        JComboBox<String> careerCombo = new JComboBox<>(new String[] {
+                "0905 - Ingeniería en Sistemas",
+                "0901 - Ingeniería Civil",
+                "0902 - Ingeniería Industrial",
+                "0903 - Ingeniería Electrónica",
+                "0904 - Arquitectura",
+                "0910 - Administración de Empresas",
+                "0911 - Contaduría Pública",
+                "0912 - Derecho"
+        });
 
         styleField(idField);
         styleField(nameField);
         styleField(emailField);
-        styleField(careerField);
+        styleCombo(careerCombo);
 
         JButton saveButton = createInvisibleButton();
         JButton backButton = createInvisibleButton();
@@ -47,9 +56,10 @@ public class AddStudentFrame extends JFrame {
             String id = idField.getText().trim();
             String name = nameField.getText().trim();
             String email = emailField.getText().trim();
-            String career = careerField.getText().trim();
+            String career =
+                    careerCombo.getSelectedItem().toString();
 
-            if (id.isEmpty() || name.isEmpty() || email.isEmpty() || career.isEmpty()) {
+            if (id.isEmpty() || name.isEmpty() || email.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Debe llenar todos los campos.");
                 return;
             }
@@ -78,7 +88,7 @@ public class AddStudentFrame extends JFrame {
             idField.setText("");
             nameField.setText("");
             emailField.setText("");
-            careerField.setText("");
+            careerCombo.setSelectedIndex(0);
         });
 
         backButton.addActionListener(e -> dispose());
@@ -86,7 +96,7 @@ public class AddStudentFrame extends JFrame {
         mainPanel.add(idField);
         mainPanel.add(nameField);
         mainPanel.add(emailField);
-        mainPanel.add(careerField);
+        mainPanel.add(careerCombo);
         mainPanel.add(saveButton);
         mainPanel.add(backButton);
 
@@ -100,8 +110,12 @@ public class AddStudentFrame extends JFrame {
                 idField.setBounds((int)(w * 0.34), (int)(h * 0.37), (int)(w * 0.48), 55);
                 nameField.setBounds((int)(w * 0.34), (int)(h * 0.47), (int)(w * 0.48), 55);
                 emailField.setBounds((int)(w * 0.34), (int)(h * 0.57), (int)(w * 0.48), 55);
-                careerField.setBounds((int)(w * 0.34), (int)(h * 0.67), (int)(w * 0.48), 55);
-
+                careerCombo.setBounds(
+                        (int)(w * 0.34),
+                        (int)(h * 0.65),
+                        (int)(w * 0.51),
+                        70
+                );
                 saveButton.setBounds((int)(w * 0.35), (int)(h * 0.77), (int)(w * 0.30), 70);
                 backButton.setBounds((int)(w * 0.01), (int)(h * 0.90), (int)(w * 0.14), 70);
             }
@@ -115,6 +129,21 @@ public class AddStudentFrame extends JFrame {
     private void styleField(JTextField field) {
         field.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         field.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    }
+    private void styleCombo(JComboBox<String> combo) {
+
+        combo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+
+        combo.setBackground(Color.WHITE);
+
+        combo.setBorder(
+                BorderFactory.createEmptyBorder(
+                        5,
+                        15,
+                        5,
+                        15
+                )
+        );
     }
 
     private JButton createInvisibleButton() {
