@@ -1,4 +1,4 @@
-# 🎓 Campus Lite
+#  Campus Lite
 
 ### Programación I – Proyecto Final  
 ### Universidad Mariano Gálvez de Guatemala, Campus Jutiapa
@@ -25,7 +25,7 @@ El proyecto fue desarrollado como parte del curso **Programación I**, aplicando
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 - **Java**
 - **Java Swing (GUI)**
@@ -39,7 +39,7 @@ El proyecto fue desarrollado como parte del curso **Programación I**, aplicando
 
 ---
 
-## 📂 Repositorio del Proyecto
+##  Repositorio del Proyecto
 
 Repositorio oficial del proyecto:
 
@@ -210,7 +210,7 @@ Separación clara de responsabilidades mediante estructura modular:
 
 ---
 
-## ⚠️ Problemas Encontrados y Soluciones
+##  Problemas Encontrados y Soluciones
 
 ### 1. Conflictos con GitHub
 Durante el trabajo colaborativo surgieron conflictos al realizar sincronización del repositorio.
@@ -310,7 +310,7 @@ Main.java
 
 ---
 
-## ✅ Conclusión
+##  Conclusión
 
 El proyecto **Campus Lite** permitió aplicar de forma práctica conocimientos fundamentales de programación, diseño de interfaces gráficas, persistencia
 de datos, control de versiones y trabajo colaborativo.
