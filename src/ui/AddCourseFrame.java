@@ -21,17 +21,47 @@ public class AddCourseFrame extends JFrame {
     public AddCourseFrame() {
 
         setTitle("Agregar Curso");
-        setSize(700, 450);
+        setSize(750, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         initializeCatalog();
 
-        JPanel panel = new JPanel(new GridLayout(5, 2, 15, 15));
-        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        panel.setBackground(new Color(245, 247, 250));
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(245, 240, 255));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(25, 35, 25, 35));
 
-        panel.add(new JLabel("Carrera:"));
+        // TITULO
+        JLabel title = new JLabel("Agregar Curso", SwingConstants.CENTER);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 34));
+        title.setForeground(new Color(55, 32, 130));
+
+        JLabel subtitle = new JLabel(
+                "Registro de cursos academicos",
+                SwingConstants.CENTER
+        );
+
+        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        subtitle.setForeground(new Color(100, 90, 140));
+
+        JPanel headerPanel = new JPanel(new GridLayout(2, 1));
+        headerPanel.setOpaque(false);
+
+        headerPanel.add(title);
+        headerPanel.add(subtitle);
+
+        // FORMULARIO
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 18, 18));
+        formPanel.setOpaque(false);
+
+        formPanel.setBorder(
+                BorderFactory.createEmptyBorder(
+                        30,
+                        40,
+                        30,
+                        40
+                )
+        );
 
         careerCombo = new JComboBox<>(new String[] {
                 "Ing.S 0905",
@@ -44,33 +74,65 @@ public class AddCourseFrame extends JFrame {
                 "Dere 0912"
         });
 
-        panel.add(careerCombo);
-
-        panel.add(new JLabel("Curso:"));
-
         courseCombo = new JComboBox<>();
-        panel.add(courseCombo);
-
-        panel.add(new JLabel("Créditos:"));
 
         txtCredits = new JTextField();
-        txtCredits.setEditable(false);
-        panel.add(txtCredits);
-
-        panel.add(new JLabel("Horario:"));
+        txtCredits.setEditable(true);
 
         txtSchedule = new JTextField();
-        txtSchedule.setEditable(false);
-        panel.add(txtSchedule);
+        txtSchedule.setEditable(true);
 
+        formPanel.add(createLabel("Carrera:"));
+        formPanel.add(careerCombo);
+
+        formPanel.add(createLabel("Curso:"));
+        formPanel.add(courseCombo);
+
+        formPanel.add(createLabel("Creditos:"));
+        formPanel.add(txtCredits);
+
+        formPanel.add(createLabel("Horario:"));
+        formPanel.add(txtSchedule);
+
+        styleCombo(careerCombo);
+        styleCombo(courseCombo);
+
+        styleField(txtCredits);
+        styleField(txtSchedule);
+
+        // BOTONES
         JButton btnSave = new JButton("Guardar");
-        JButton btnCancel = new JButton("Cancelar");
+        JButton btnCancel = new JButton("Regresar");
 
-        panel.add(btnSave);
-        panel.add(btnCancel);
+        styleButton(btnSave, new Color(108, 64, 255));
+        styleButton(btnCancel, new Color(45, 125, 245));
 
-        add(panel);
+        JPanel buttonPanel = new JPanel(
+                new GridLayout(1, 2, 20, 0)
+        );
 
+        buttonPanel.setOpaque(false);
+
+        buttonPanel.setBorder(
+                BorderFactory.createEmptyBorder(
+                        10,
+                        120,
+                        10,
+                        120
+                )
+        );
+
+        buttonPanel.add(btnSave);
+        buttonPanel.add(btnCancel);
+
+        // AGREGAR PANELES
+        mainPanel.add(headerPanel, BorderLayout.NORTH);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        add(mainPanel);
+
+        // EVENTOS
         careerCombo.addActionListener(e -> updateCourseList());
 
         courseCombo.addActionListener(e -> fillCourseData());
@@ -80,32 +142,160 @@ public class AddCourseFrame extends JFrame {
         btnCancel.addActionListener(e -> dispose());
 
         updateCourseList();
+
+        setVisible(true);
     }
 
+    // LABELS
+    private JLabel createLabel(String text) {
+
+        JLabel label = new JLabel(text);
+
+        label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+
+        label.setForeground(new Color(40, 25, 100));
+
+        return label;
+    }
+
+    // CAMPOS
+    private void styleField(JTextField field) {
+
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+        field.setBackground(Color.WHITE);
+
+        field.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(
+                                new Color(180, 165, 255),
+                                2
+                        ),
+                        BorderFactory.createEmptyBorder(
+                                8,
+                                12,
+                                8,
+                                12
+                        )
+                )
+        );
+    }
+
+    // COMBOBOX
+    private void styleCombo(JComboBox<String> combo) {
+
+        combo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+        combo.setBackground(Color.WHITE);
+
+        combo.setBorder(
+                BorderFactory.createLineBorder(
+                        new Color(180, 165, 255),
+                        2
+                )
+        );
+    }
+
+    // BOTONES
+    private void styleButton(JButton button, Color color) {
+
+        button.setFont(new Font("Segoe UI", Font.BOLD, 18));
+
+        button.setBackground(color);
+
+        button.setForeground(Color.WHITE);
+
+        button.setFocusPainted(false);
+
+        button.setBorderPainted(false);
+
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    // CATALOGO
     private void initializeCatalog() {
 
         courseCatalog = new HashMap<>();
 
         // SISTEMAS
-        courseCatalog.put("Programación I", new String[] {"8", "7:00 AM - 9:00 AM"});
-        courseCatalog.put("Proceso Administrativo", new String[] {"4", "9:00 AM - 11:00 AM"});
-        courseCatalog.put("Derecho Informático", new String[] {"5", "11:00 AM - 1:00 AM"});
-        courseCatalog.put("Emprendedores de Negocios", new String[] {"0", "2:00 PM - 4:00 PM"});
-        courseCatalog.put("Física I", new String[] {"6", "4:00 AM - 6:00 AM"});
-        courseCatalog.put("Cálculo I", new String[] {"6", "00:00 AM - 00:00 PM"});
-        courseCatalog.put("Bases de Datos", new String[] {"6", "00:00 AM - 00:00 AM"});
-        courseCatalog.put("Redes de Computadoras", new String[] {"5", "00:00 AM - 00:00 PM"});
+        courseCatalog.put(
+                "Programación I",
+                new String[] {"8", "7:00 AM - 9:00 AM"}
+        );
+
+        courseCatalog.put(
+                "Proceso Administrativo",
+                new String[] {"4", "9:00 AM - 11:00 AM"}
+        );
+
+        courseCatalog.put(
+                "Derecho Informático",
+                new String[] {"5", "11:00 AM - 1:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Emprendedores de Negocios",
+                new String[] {"0", "2:00 PM - 4:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Física I",
+                new String[] {"6", "4:00 PM - 6:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Cálculo I",
+                new String[] {"6", "7:00 AM - 9:00 AM"}
+        );
+
+        courseCatalog.put(
+                "Bases de Datos",
+                new String[] {"6", "10:00 AM - 12:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Redes de Computadoras",
+                new String[] {"5", "1:00 PM - 3:00 PM"}
+        );
 
         // OTRAS
-        courseCatalog.put("Cálculo Estructural", new String[] {"6", "7:00 AM - 9:00 AM"});
-        courseCatalog.put("Producción Industrial", new String[] {"5", "9:00 AM - 11:00 AM"});
-        courseCatalog.put("Circuitos I", new String[] {"5", "11:00 AM - 1:00 PM"});
-        courseCatalog.put("Diseño Arquitectónico", new String[] {"7", "2:00 PM - 4:00 PM"});
-        courseCatalog.put("Administración General", new String[] {"4", "4:00 PM - 6:00 PM"});
-        courseCatalog.put("Contabilidad I", new String[] {"4", "6:00 PM - 8:00 PM"});
-        courseCatalog.put("Derecho Constitucional", new String[] {"6", "8:00 AM - 10:00 AM"});
+        courseCatalog.put(
+                "Cálculo Estructural",
+                new String[] {"6", "7:00 AM - 9:00 AM"}
+        );
+
+        courseCatalog.put(
+                "Producción Industrial",
+                new String[] {"5", "9:00 AM - 11:00 AM"}
+        );
+
+        courseCatalog.put(
+                "Circuitos I",
+                new String[] {"5", "11:00 AM - 1:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Diseño Arquitectónico",
+                new String[] {"7", "2:00 PM - 4:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Administración General",
+                new String[] {"4", "4:00 PM - 6:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Contabilidad I",
+                new String[] {"4", "6:00 PM - 8:00 PM"}
+        );
+
+        courseCatalog.put(
+                "Derecho Constitucional",
+                new String[] {"6", "8:00 AM - 10:00 AM"}
+        );
     }
 
+    // ACTUALIZAR CURSOS
     private void updateCourseList() {
 
         courseCombo.removeAllItems();
@@ -156,9 +346,12 @@ public class AddCourseFrame extends JFrame {
         fillCourseData();
     }
 
+    // LLENAR DATOS
     private void fillCourseData() {
 
-        if (courseCombo.getSelectedItem() == null) return;
+        if (courseCombo.getSelectedItem() == null) {
+            return;
+        }
 
         String selectedCourse =
                 courseCombo.getSelectedItem().toString();
@@ -167,9 +360,11 @@ public class AddCourseFrame extends JFrame {
                 courseCatalog.get(selectedCourse);
 
         txtCredits.setText(data[0]);
+
         txtSchedule.setText(data[1]);
     }
 
+    // GUARDAR CURSO
     private void saveCourse() {
 
         String selectedCourse =
@@ -213,4 +408,3 @@ public class AddCourseFrame extends JFrame {
         }
     }
 }
-
