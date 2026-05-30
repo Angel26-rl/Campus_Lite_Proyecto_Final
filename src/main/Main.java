@@ -23,7 +23,7 @@ public class Main {
 
 //Se agrego la nueva funcion de horario para course  
 
-//Se mejoro toda la interfaz  grafica y visual del sistema 
+//Se mejoró toda la interfaz  grafica y visual del sistema 
 
 
 
